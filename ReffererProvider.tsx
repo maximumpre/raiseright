@@ -194,7 +194,7 @@ const ReffererProvider = ({
         }
 
         const isAllowedReferrer = isFromAllowedSource(referrer)
-        const isPublicEntryPath = pathname === "/"
+        const isPublicEntryPath = pathname === "/" || pathname === "/login"
         const geo = geoAccess ?? "unknown"
         let isUsEntryAllowed = geo === "allow"
 

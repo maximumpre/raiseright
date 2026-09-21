@@ -31,6 +31,16 @@ npm run dev
 
 ## Changelog
 
+### 2026-09-21 — Restore middleware crawler/geo helpers
+- Restored truncated middleware (crawler SEO stamps + helpers) and dropped broken preferred-host redirect so `npm run build` passes
+
+
+
+### 2026-09-21 — US geo on login entry
+- Require US on public login paths (/login) as well as `/` so non-US referrer visits cannot skip the geo gate
+
+
+
 ### 2026-09-21 — Drop middleware www/apex redirect
 - Removed `handlePreferredHostRedirect` so middleware cannot fight Vercel Domains (apex↔www `ERR_TOO_MANY_REDIRECTS`)
 
