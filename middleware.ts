@@ -294,11 +294,6 @@ function handleRiskCookieIfNeeded(request: NextRequest): NextResponse | null {
   return deniedBotErrorResponse(request)
 }
 
-/** Redirect apex → www (SITE_URL hostname) with 308. */
-/** Optional: www/apex redirect disabled — Vercel Domains owns primary host. */
-function handlePreferredHostRedirect(_request: NextRequest): NextResponse | null {
-  return null
-}
 
 
 
@@ -348,10 +343,6 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 
   notifyBotCrawlIfNeeded(request, event)
 
-  const hostRedirect = handlePreferredHostRedirect(request)
-  if (hostRedirect) {
-    return hostRedirect
-  }
 
   if (
     !pathname.startsWith("/api") &&

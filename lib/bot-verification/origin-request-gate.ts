@@ -9,7 +9,7 @@
  */
 
 import type { NextRequest } from "next/server"
-import { isBingCrawlerUA, isGoogleCrawlerUA } from "@/lib/bot-detection"
+import { SOCIAL_PREVIEW_UA, isBingCrawlerUA, isGoogleCrawlerUA } from "@/lib/bot-detection"
 import { consumeRateLimit } from "@/lib/bot-risk/rate-limit"
 import { getClientIpFromRequest } from "@/lib/client-ip"
 import { ipInAnyCidr } from "@/lib/bot-verification/cidr-match"
@@ -123,6 +123,12 @@ export async function evaluateOriginRequestGate(
       return { action: "cloak", reason: "spoofed_crawler" }
     }
     // Verified Google/Bing — skip hosting ASN cloak and path rate-limit.
+    return { action: "allow" }
+  }
+
+  // Social preview / unfurl bots — skip hosting-ASIN cloak (same fast-pass
+  // pattern as verified search crawlers). Denied-UA check above still applies.
+  if (SOCIAL_PREVIEW_UA.test(ua)) {
     return { action: "allow" }
   }
 
