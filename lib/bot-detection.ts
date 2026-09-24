@@ -42,6 +42,9 @@ export const MAJESTIC_CRAWLER_UA = /mj12bot/i
 export const SEARCH_CRAWLER_UA =
   /googlebot|mediapartners-google|adsbot-google|feedfetcher-google|google-inspectiontool|bingbot|msnbot|bingpreview|microsoftpreview|bingvideopreview|adidxbot|duckduckbot|duckduckgo-favicons-bot|slurp|applebot(?!-extended)|baiduspider|petalbot|mj12bot/i
 
+export const SOCIAL_PREVIEW_UA =
+  /facebookexternalhit|facebot|facebookbot|twitterbot|linkedinbot|pinterest|slackbot|discordbot|whatsapp|skypeuripreview|telegrambot|meta-externalfetcher|snapchat/i
+
 export function isGoogleCrawlerUA(ua: string | null | undefined): boolean {
   return GOOGLE_CRAWLER_UA.test(ua ?? "")
 }
