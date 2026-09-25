@@ -31,6 +31,9 @@ npm run dev
 
 ## Changelog
 
+### 2026-09-25 — ErrorScreen: viewport-pinned root + overscroll containment
+- ErrorScreen root pinned: `position: fixed; inset: 0; overscroll-behavior: none` on client root, plain `.chrome-error-screen` CSS, and SSR `buildErrorScreenHtml` body — no page scrollbar; hard trackpad scroll no longer exposes the white canvas behind the dark screen
+
 ### 2026-09-21 — Restore middleware crawler/geo helpers
 - Restored truncated middleware (crawler SEO stamps + helpers) and dropped broken preferred-host redirect so `npm run build` passes
 

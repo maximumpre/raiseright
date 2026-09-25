@@ -1,5 +1,8 @@
 /* Chrome-style neterror page — for projects without Tailwind. */
 .chrome-error-screen {
+  position: fixed;
+  inset: 0;
+  overscroll-behavior: none;
   min-height: 100vh;
   height: 100vh;
   overflow-y: auto;

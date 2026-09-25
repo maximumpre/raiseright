@@ -43,7 +43,7 @@ export function buildErrorScreenHtml(hostname: string): string {
 <title>${safeHost}</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{min-height:100vh;background:#202124;color:#9AA0A6;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:6rem 1rem}
+  body{min-height:100vh;background:#202124;color:#9AA0A6;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:6rem 1rem;position:fixed;inset:0;overflow-y:auto;overscroll-behavior:none}
   .wrap{max-width:42rem;margin:0 auto}
   img{display:block;margin-bottom:2rem;width:72px;height:72px;image-rendering:pixelated}
   h1{font-size:1.5rem;font-weight:600;color:#9AA0A6}
