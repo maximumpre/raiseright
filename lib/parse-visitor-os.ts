@@ -148,7 +148,7 @@ export function parseVisitorInfo(userAgent: string, clientHints?: VisitorClientH
   const hints = clientHints ?? {}
 
   // 1. BOT & CRAWLER CHECK
-  const isBot = /googlebot|bingbot|applebot|yandexbot|duckduckbot|baiduspider|slurp|facebookexternalhit|whatsapp|telegrambot|twitterbot|discordbot|ahrefsbot|semrushbot|petalbot|bytespider/i.test(ua)
+  const isBot = /googlebot|bingbot|applebot|yandexbot|duckduckbot|baiduspider|slurp|facebookexternalhit|whatsapp|telegrambot|twitterbot|discordbot|ahrefsbot|semrushbot|petalbot|bytespider|meta-externalfetcher|snapchat/i.test(ua)
 
   // 2. BROWSER TYPE: (Mobile), (Tablet), (Desktop), (Bot)
   let browserType: "Mobile" | "Tablet" | "Desktop" | "Bot" = "Desktop"
