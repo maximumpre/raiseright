@@ -31,7 +31,11 @@ npm run dev
 
 ## Changelog
 
-### 2026-10-04 — Visit notification aligned to the canonical fleet template (Unknowns removed)
+### 2026-10-04 — Search engine site names alignment and CrawlerSeoHead delivery
+- **Crawler Head Parity (`CrawlerSeoHead`)**: Added `components/CrawlerSeoHead.tsx` rendered in `app/layout.tsx` on the crawler branch (`if (isCrawlerSeo)`), ensuring Googlebot and Bingbot receive `<title>`, `<meta property="og:site_name">`, canonical, and multi-size favicon links hoisted via React 19.
+- **Audit Invariant Hardening**: Wired `isDeniedBotUserAgent` into `middleware.ts` to prevent denied bots from receiving crawler SEO stamps, and updated `components/CrawlerSeoPage.tsx` to render `SITE_VISIBLE_KEYWORDS` in visible body copy while keeping raw domains meta-only.
+- **Verification**: `scripts/audit-crawler-seo.mjs` exits 0; `npm run build` completed with all 22 static pages generated and prebuild audits passing.
+
 
 - **Template now matches the kit byte-for-byte.** `sendVisitorNotification` in `lib/telegram.ts` renders the canonical shape — `🌐 (site)` header → separator → 📍 Location / 🌍 IP / ⏰ Timezone / 🌐 ISP plus optional 🛡️ `VPN/DATA CENTER` → 🖥 Platform / 👨‍💻 Browser / 📱 Device / 🖥️ Screen / 🔗 Referrer / 🌐 URL → `All Father` footer. The legacy `New Visitor (...)` header, `🛡️ Network:` line, OS/Device conditionals, raw-UA `<pre>` dump, `Language` and `Local Time` / `UTC Time` lines are gone, and link previews now rotate through `getRotatedPreviewUrl`.
 - **Browser label no longer renders Unknown.** `/api/telegram/visitor` now calls `parseVisitorInfo` with the `sec-ch-ua-*` Client Hints and emits `platformLabel` + `browserLabel` alongside the existing `osLabel` / `deviceLabel`. This also puts the previously-declared-but-unused `uaModel` to work (it feeds `hints.model`).

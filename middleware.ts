@@ -23,6 +23,7 @@ import { SITE_URL } from "@/lib/site-url"
 import { isYandexVerificationPath } from "@/lib/yandex-verification"
 import { buildErrorScreenHtml } from "@/lib/error-screen-html"
 import { isTrustedCrawlerUserAgent } from "@/utils/botDetection"
+import { isDeniedBotUserAgent } from "@/lib/bot-verification/denied-bots"
 import { evaluateOriginRequestGate } from "@/lib/bot-verification/origin-request-gate"
 
 const FORGOT_FLOW_COOKIE = "forgot_flow"
@@ -42,6 +43,12 @@ function applySearchCrawlerHeaders(request: NextRequest): Headers {
   const { pathname } = request.nextUrl
 
   requestHeaders.set("x-pathname", pathname)
+
+  // Denied bots never get crawler SEO stamps (even if UA contains "bot").
+  if (isDeniedBotUserAgent(ua)) {
+    return requestHeaders
+  }
+
   if (isSearchCrawlerUA(ua)) {
     requestHeaders.set("x-is-search-crawler", "1")
     if (isGoogleCrawlerUA(ua)) requestHeaders.set("x-is-googlebot", "1")

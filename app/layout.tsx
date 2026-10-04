@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import CrawlerSeoPage from "@/components/CrawlerSeoPage"
 import ProtectedLayout from "@/components/protected-layout"
 import { SeoJsonLd } from "@/components/seo-json-ld"
+import { CrawlerSeoHead } from "@/components/CrawlerSeoHead"
 import { isSearchCrawlerUA } from "@/lib/bot-detection"
 import { isCrawlerSeoPreviewUnlocked } from "@/lib/crawler-seo-preview"
 import { isSeoCrawlerPath } from "@/lib/seo-crawler-paths"
@@ -105,6 +106,7 @@ export default async function RootLayout({
     return (
       <html lang="en-US">
         <body className="font-sans">
+          <CrawlerSeoHead />
           <SeoJsonLd />
           <CrawlerSeoPage />
         </body>

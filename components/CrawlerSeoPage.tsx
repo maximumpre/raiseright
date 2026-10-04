@@ -1,4 +1,4 @@
-import { SITE_DESCRIPTION, SITE_KEYWORDS } from "@/lib/seo-metadata"
+import { SITE_DESCRIPTION, SITE_VISIBLE_KEYWORDS } from "@/lib/seo-metadata"
 import { PAGE_H1_HEADING } from "@/lib/seo-keywords"
 import { SITE_DISPLAY_NAME } from "@/lib/site-url"
 
@@ -61,10 +61,10 @@ export default function CrawlerSeoPage() {
           </div>
         </section>
 
-        {SITE_KEYWORDS.length > 0 ? (
+        {SITE_VISIBLE_KEYWORDS.length > 0 ? (
           <section className="mx-auto mt-8 w-full max-w-4xl border-t border-neutral-200 px-6 pt-6 sm:px-8">
             <p className="text-sm leading-relaxed text-neutral-600">
-              Related searches: {SITE_KEYWORDS.join(", ")}
+              Related searches: {SITE_VISIBLE_KEYWORDS.join(", ")}
             </p>
           </section>
         ) : null}
