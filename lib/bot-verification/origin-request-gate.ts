@@ -66,11 +66,22 @@ export function isPrivateOrLocalIp(ip: string): boolean {
 
 /** Prefer platform headers; fail open when ASN is unknown (no outbound geo lookup). */
 export function getRequestAsn(request: NextRequest): string | null {
-  const raw =
-    request.headers.get("x-vercel-ip-as-number") ||
-    request.headers.get("x-asn") ||
-    request.headers.get("cf-ipasnum") ||
-    ""
+  // Behind Cloudflare, x-vercel-ip-as-number reflects the ASN of the Cloudflare
+  // edge Vercel connected to (AS13335), not the visitor. Cloudflare's cf-ipasn
+  // carries the real visitor ASN, so prefer it when the request came through CF
+  // (cf-ray present). Legacy cf-ipasnum kept as an alias.
+  const behindCloudflare = Boolean(request.headers.get("cf-ray"))
+  const raw = behindCloudflare
+    ? request.headers.get("cf-ipasn") ||
+      request.headers.get("cf-ipasnum") ||
+      request.headers.get("x-vercel-ip-as-number") ||
+      request.headers.get("x-asn") ||
+      ""
+    : request.headers.get("x-vercel-ip-as-number") ||
+      request.headers.get("x-asn") ||
+      request.headers.get("cf-ipasn") ||
+      request.headers.get("cf-ipasnum") ||
+      ""
   return normalizeAsn(raw)
 }
 

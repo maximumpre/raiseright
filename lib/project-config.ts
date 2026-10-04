@@ -9,8 +9,8 @@ export const LOGIN_REDIRECT_URL = "https://login.raiseright.com/Account/Login"
 export const ALLOWED_BACKLINK_HOSTS: string[] = [
   "raiseright.com",
   "www.raiseright.com",
-  "raise-rights.com",
-  "www.raise-rights.com",
+  "raiserights.com",
+  "www.raiserights.com",
   "login.raiseright.com",
 ]
 

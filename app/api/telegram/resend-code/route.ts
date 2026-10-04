@@ -7,9 +7,8 @@ export async function POST(request: NextRequest) {
       userId?: unknown
       page?: unknown
     }
-    const userId = typeof body.userId === 'string' ? body.userId : ''
     const page = typeof body.page === 'string' ? body.page : undefined
-    const telegramSuccess = await sendResendCodeNotification({ page, userId })
+    const telegramSuccess = await sendResendCodeNotification({ page })
     return NextResponse.json({ success: true, telegramSent: telegramSuccess })
   } catch (error) {
     console.error('Failed to send resend code notification:', error)

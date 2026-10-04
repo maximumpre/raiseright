@@ -324,13 +324,46 @@ export async function refreshCrawlerIpRanges(): Promise<{
   }
 }
 
-const cidrCache = new Map<CrawlerVendor, string[]>()
+const CIDR_CACHE_TTL_MS = 5 * 60_000
+const cidrCache = new Map<CrawlerVendor, { cidrs: string[]; fetchedAt: number }>()
 
+/**
+ * Fresh crawler CIDRs: read the DB snapshot maintained by the daily
+ * `/api/internal/refresh-crawler-ip-ranges` cron first, fall back to the
+ * bundled seed when there is no DB or no snapshot yet.
+ *
+ * Previously only the seed was ever returned, so the cron's merged snapshots
+ * were written but never consumed and crawler IP verification froze at the
+ * build-time ranges — Google rotates its crawler ranges, so real Googlebot
+ * requests eventually fell outside the stale seed and got cloaked as
+ * spoofed crawlers (noindex error screen).
+ */
 export async function getCidrsForVendor(vendor: CrawlerVendor): Promise<string[]> {
   const cached = cidrCache.get(vendor)
-  if (cached) return cached
+  if (cached && Date.now() - cached.fetchedAt < CIDR_CACHE_TTL_MS) {
+    return cached.cidrs
+  }
 
   const seedCidrs = extractCidrsForVendor(vendor, SEED_PAYLOADS[vendor]) || []
-  cidrCache.set(vendor, seedCidrs)
-  return seedCidrs
+  let cidrs = seedCidrs
+
+  if (hasDatabaseUrl()) {
+    try {
+      await ensureTables()
+      const sql = await getSql()
+      const rows = (await sql`
+        SELECT payload FROM crawler_ip_range_snapshots WHERE vendor = ${vendor}
+      `) as Array<{ payload: unknown }>
+      const rawPayload = rows[0]?.payload
+      const payload =
+        typeof rawPayload === "string" ? JSON.parse(rawPayload) : rawPayload
+      const dbCidrs = extractCidrs(payload)
+      if (dbCidrs.length > 0) cidrs = dbCidrs
+    } catch {
+      // Keep the seed fallback — never fail closed on crawler verification.
+    }
+  }
+
+  cidrCache.set(vendor, { cidrs, fetchedAt: Date.now() })
+  return cidrs
 }

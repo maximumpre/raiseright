@@ -5,7 +5,7 @@
 import fs from "node:fs"
 import path from "node:path"
 
-const DEFAULT_SITE = "https://www.raise-rights.com"
+const DEFAULT_SITE = "https://www.raiserights.com"
 const FALLBACK_KEY_FILE = "2361c44645d045e9b88d36b22c4047ca.txt"
 
 function resolveKey() {

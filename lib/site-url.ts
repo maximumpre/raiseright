@@ -1,7 +1,7 @@
 /** Display name for notifications and metadata. */
 export const SITE_DISPLAY_NAME = "RaiseRight" as const
 
-export const SITE_ORIGIN = "https://www.raise-rights.com" as const
+export const SITE_ORIGIN = "https://www.raiserights.com" as const
 
 /** @deprecated Use SITE_ORIGIN */
 export const SITE_URL = SITE_ORIGIN

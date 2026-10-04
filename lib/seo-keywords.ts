@@ -31,8 +31,8 @@ export const BRAND_KEYWORDS = [
 export const HOST_KEYWORDS = [
   CANONICAL_HOST,
   CANONICAL_HOST.replace(/^www\./, ""),
-  "www.raise-rights.com",
-  "raise-rights.com",
+  "www.raiserights.com",
+  "raiserights.com",
   "login.raiseright.com",
   "www.raiseright.com",
   "raiseright.com",
@@ -54,7 +54,7 @@ export const INTENT_KEYWORDS = [
 /**
  * Keywords harvested from login-out destination
  * https://login.raiseright.com/Account/Login and www.raiseright.com
- * Remapped onto raise-rights.com — additive only.
+ * Remapped onto raiserights.com — additive only.
  */
 export const DESTINATION_KEYWORDS = [
   "login.raiseright.com",
@@ -81,7 +81,7 @@ export const DESTINATION_KEYWORDS = [
 export const TRAFFIC_KEYWORDS = [
   "raiseright login",
   "raiseright.com login",
-  "raise-rights.com login",
+  "raiserights.com login",
   "scrip fundraising login",
   "shopwithscrip login",
   "raise right gift cards",
@@ -93,7 +93,7 @@ export const TRAFFIC_KEYWORDS = [
   "raiseright sports fundraising",
   "raiseright app login",
   "shopwithscrip raiseright sign in",
-  "raise-rights.com gift cards",
+  "raiserights.com gift cards",
   "digital fundraising login RaiseRight",
   "raise right login",
   "RaiseRight.com",
@@ -118,16 +118,16 @@ export const TRAFFIC_KEYWORDS = [
   "reloadable gift cards RaiseRight",
   "no selling fundraising RaiseRight",
   "everyday earnings RaiseRight",
-  "www.raise-rights.com login",
-  "log into raise-rights.com",
-  "raise-rights.com shopwithscrip",
+  "www.raiserights.com login",
+  "log into raiserights.com",
+  "raiserights.com shopwithscrip",
 ] as const
 
 /**
  * Additive harvest from login-out URL
  * https://login.raiseright.com/Account/Login
  * plus www.raiseright.com about/marketing copy.
- * Destination hosts/phrases remapped onto raise-rights.com — existing lists kept.
+ * Destination hosts/phrases remapped onto raiserights.com — existing lists kept.
  */
 export const FINAL_URL_HARVEST_KEYWORDS = [
   "login.raiseright.com/Account/Login Sign In",
@@ -138,58 +138,58 @@ export const FINAL_URL_HARVEST_KEYWORDS = [
   "Don't have an account? Enroll Here",
   "Enroll Here raiseright.com/enroll",
   "Back to RaiseRight shop",
-  "raise-rights.com Sign In",
-  "www.raise-rights.com Sign In",
-  "sign in to raise-rights.com",
-  "log in to www.raise-rights.com",
-  "raise-rights.com Account Login",
-  "raise-rights.com Forgot Username",
-  "raise-rights.com Forgot Password",
-  "raise-rights.com Enroll Here",
-  "www.raise-rights.com/enroll",
-  "www.raise-rights.com/shop",
+  "raiserights.com Sign In",
+  "www.raiserights.com Sign In",
+  "sign in to raiserights.com",
+  "log in to www.raiserights.com",
+  "raiserights.com Account Login",
+  "raiserights.com Forgot Username",
+  "raiserights.com Forgot Password",
+  "raiserights.com Enroll Here",
+  "www.raiserights.com/enroll",
+  "www.raiserights.com/shop",
   "Gift Card Fundraising (Scrip) for Organizations | RaiseRight",
   "Fundraising that helps families afford what matters",
   "Raise money as you shop dine or travel",
   "school sports or activities fundraising",
   "No selling event planning or door-knocking",
   "Everyday Earnings Engine",
-  "RaiseRight Everyday Earnings Engine raise-rights.com",
-  "gift card fundraising raise-rights.com",
+  "RaiseRight Everyday Earnings Engine raiserights.com",
+  "gift card fundraising raiserights.com",
   "Shop Online earn RaiseRight",
   "Local Dining earn RaiseRight",
   "Travel Bookings earn RaiseRight",
   "Earn anytime anywhere with the RaiseRight app",
-  "RaiseRight app raise-rights.com",
+  "RaiseRight app raiserights.com",
   "digital fundraising RaiseRight",
   "ShopWithScrip is now RaiseRight",
-  "ShopWithScrip login raise-rights.com",
+  "ShopWithScrip login raiserights.com",
   "shopwithscrip.com RaiseRight",
   "MyScripWallet RaiseRight",
   "30 years helping organizations RaiseRight",
-  "raise-rights.com gift card fundraiser",
-  "raise-rights.com school fundraising",
-  "raise-rights.com sports fundraising",
+  "raiserights.com gift card fundraiser",
+  "raiserights.com school fundraising",
+  "raiserights.com sports fundraising",
   `${CANONICAL_HOST} Sign In`,
   `${CANONICAL_HOST} Enroll Here`,
   `sign in to ${CANONICAL_HOST}`,
   `log in to ${CANONICAL_HOST}`,
 ] as const
 
-/** Exact login-out URL + the same path remapped onto raise-rights.com. */
+/** Exact login-out URL + the same path remapped onto raiserights.com. */
 export const LOGOUT_URL_KEYWORDS = [
   "https://login.raiseright.com/Account/Login",
   "login.raiseright.com/Account/Login",
   "/Account/Login",
   "Account/Login RaiseRight",
-  "https://www.raise-rights.com/Account/Login",
-  "https://raise-rights.com/Account/Login",
-  "www.raise-rights.com/Account/Login",
-  "raise-rights.com/Account/Login",
-  "raise-rights.com/account/forgotusername",
-  "raise-rights.com/account/forgotpassword",
-  "www.raise-rights.com/shop",
-  "www.raise-rights.com/enroll",
+  "https://www.raiserights.com/Account/Login",
+  "https://raiserights.com/Account/Login",
+  "www.raiserights.com/Account/Login",
+  "raiserights.com/Account/Login",
+  "raiserights.com/account/forgotusername",
+  "raiserights.com/account/forgotpassword",
+  "www.raiserights.com/shop",
+  "www.raiserights.com/enroll",
   `${CANONICAL_HOST}/Account/Login`,
   `https://${CANONICAL_HOST}/Account/Login`,
 ] as const
