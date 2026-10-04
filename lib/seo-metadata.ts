@@ -4,7 +4,7 @@ import { DEFAULT_SITE_TITLE, CANONICAL_HOST, SITE_DISPLAY_NAME } from "@/lib/sit
 
 export { HOME_DESCRIPTION }
 
-export const SITE_TITLE = `Login | ${SITE_DISPLAY_NAME}`
+export const SITE_TITLE = `Participant Login | ${SITE_DISPLAY_NAME}`
 
 export const SITE_DESCRIPTION = LAYOUT_DESCRIPTION
 
