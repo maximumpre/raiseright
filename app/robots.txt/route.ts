@@ -23,7 +23,6 @@ const CRAWL_DISALLOW = [
   "/forgot-password-found",
   "/forgot-password-code",
   "/forgot-id",
-  "/blocked",
 ] as const
 
 const SEARCH_AGENTS = [

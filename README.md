@@ -31,6 +31,13 @@ npm run dev
 
 ## Changelog
 
+### 2026-10-04 — Unlock sitemap routes, delete legacy /blocked, and harden referrer gating
+- **Canonical /sitemap Redirect**: Configured 308 permanent redirect from `/sitemap` to `/sitemap.xml` in `next.config.mjs` and `middleware.ts`, preventing unrouted fallback into the protected root layout and eliminating false ErrorScreen cloaking.
+- **Ungated SEO Paths Expanded**: Added `/sitemap` to `SEO_UNGATED_PATHS` in `lib/seo-public-paths.ts` and `SEO_ALLOWED_PATHS` in `middleware.ts`, with trailing-slash normalization to ensure `/sitemap/` and `/sitemap.xml/` resolve cleanly.
+- **Deleted Obsolete /blocked Route**: Removed `app/blocked/page.tsx` and purged `/blocked` from `app/robots.txt/route.ts`. The project architecture uses simulated Chrome ErrorScreen cloaking rather than revealing an explicit "Access Blocked" page to scanners.
+- **Brand Asset Bypasses**: Added `/LogoIcon.svg` to `PUBLIC_BRAND_ASSETS` in `middleware.ts` and middleware matcher to ensure brand vectors load unhindered.
+- **Verification**: Verified with `npm run prebuild` (all audits exit 0), `npm run build` (all 22 static pages generated), and curl tests on `/sitemap`, `/sitemap.xml`, and `/robots.txt`.
+
 ### 2026-10-04 — Bing SEO fix: eliminate duplicate head tags and expand title
 - **Removed Duplicate Tags**: Deleted `CrawlerSeoHead` from `app/layout.tsx` and removed the component, eliminating duplicate `<title>`, `<meta description>`, and `<link rel="canonical">` tags hoisted by React 19 alongside Next.js App Router's native `metadata`.
 - **Title Length Expansion**: Updated `SITE_TITLE` in `lib/seo-metadata.ts` to `"Participant Login | ${SITE_DISPLAY_NAME}"` (24 characters), improving search relevance context.

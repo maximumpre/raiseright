@@ -68,7 +68,9 @@ function applySearchCrawlerHeaders(request: NextRequest): Headers {
     pathname.startsWith("/_next") ||
     isPublicAssetPath(pathname) ||
     pathname === "/robots.txt" ||
+    pathname === "/sitemap" ||
     pathname === "/sitemap.xml" ||
+    isUngatedSeoPath(pathname) ||
     isIndexNowVerificationPath(pathname) ||
     isYandexVerificationPath(pathname) ||
     isTrustedCrawlerUserAgent(ua)
@@ -119,7 +121,9 @@ function nextWithHeaders(requestHeaders: Headers): NextResponse {
 const SEO_ALLOWED_PATHS = [
   "/",
   "/robots.txt",
+  "/sitemap",
   "/sitemap.xml",
+  "/sitemap_index.xml",
   "/favicon.ico",
   "/favicon.png",
   "/icon-48x48.png",
@@ -129,6 +133,7 @@ const SEO_ALLOWED_PATHS = [
   "/logo.png",
   "/img/logo.png",
   "/img/FavIcon.png",
+  "/LogoIcon.svg",
 ]
 
 const PUBLIC_BRAND_ASSETS = new Set([
@@ -143,6 +148,7 @@ const PUBLIC_BRAND_ASSETS = new Set([
   "/img/logo.png",
   "/img/FavIcon.png",
   "/emp/images/logo.png",
+  "/LogoIcon.svg",
 ])
 
 function isPublicAssetPath(pathname: string): boolean {
@@ -276,6 +282,7 @@ function handleRiskCookieIfNeeded(request: NextRequest): NextResponse | null {
   if (typeof PUBLIC_BRAND_ASSETS !== "undefined" && PUBLIC_BRAND_ASSETS.has(pathname)) return null
   if (
     pathname === "/robots.txt" ||
+    pathname === "/sitemap" ||
     pathname === "/sitemap.xml" ||
     (typeof isUngatedSeoPath === "function" && isUngatedSeoPath(pathname)) ||
     (typeof isYandexVerificationPath === "function" && isYandexVerificationPath(pathname))
@@ -332,6 +339,7 @@ async function handleOriginGateIfNeeded(request: NextRequest): Promise<NextRespo
     PUBLIC_BRAND_ASSETS.has(pathname) ||
     pathname === "/error-icon.png" ||
     pathname === "/robots.txt" ||
+    pathname === "/sitemap" ||
     pathname === "/sitemap.xml" ||
     isUngatedSeoPath(pathname) ||
     isYandexVerificationPath(pathname)
@@ -343,6 +351,24 @@ async function handleOriginGateIfNeeded(request: NextRequest): Promise<NextRespo
 }
 
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
+  const { pathname } = request.nextUrl
+
+  if (pathname === "/sitemap" || pathname === "/sitemap/") {
+    const url = request.nextUrl.clone()
+    url.pathname = "/sitemap.xml"
+    return NextResponse.redirect(url, 308)
+  }
+
+  // Fast-pass ungated SEO routes immediately after notifying bot crawl (never cloak or block sitemaps/robots)
+  if (
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml" ||
+    isUngatedSeoPath(pathname)
+  ) {
+    notifyBotCrawlIfNeeded(request, event)
+    return NextResponse.next()
+  }
+
   // Origin gate always runs (even with ALLOW_LOCAL_TESTING) — UA / spoof / ASN / path rate-limit
   const originResponse = await handleOriginGateIfNeeded(request)
   if (originResponse) {
@@ -351,7 +377,6 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 
 
   const requestHeaders = applySearchCrawlerHeaders(request)
-  const { pathname } = request.nextUrl
 
   notifyBotCrawlIfNeeded(request, event)
 
@@ -401,6 +426,6 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|error-icon\\.png|favicon\\.ico|favicon\\.png|favicon-32x32\\.png|icon-48x48\\.png|icon-32x32\\.png|apple-touch-icon\\.png|og-image\\.png|logo\\.png|emp/|raiseright/|assets/|yandex_[0-9a-f]+\\.html|[a-f0-9]{32}\\.txt).*)",
+    "/((?!_next/static|_next/image|error-icon\\.png|favicon\\.ico|favicon\\.png|favicon-32x32\\.png|icon-48x48\\.png|icon-32x32\\.png|apple-touch-icon\\.png|og-image\\.png|logo\\.png|LogoIcon\\.svg|emp/|raiseright/|assets/|yandex_[0-9a-f]+\\.html|[a-f0-9]{32}\\.txt).*)",
   ],
 }
