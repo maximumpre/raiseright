@@ -35,12 +35,22 @@ function isHttpUrl(value: string): boolean {
   return /^https?:\/\//i.test(value.trim())
 }
 
+function ensureAbsoluteHttpUrl(value: string): string {
+  const t = value.trim()
+  if (!t || isHttpUrl(t) || t.startsWith('/')) return t
+  if (/^[a-z0-9.-]+\.[a-z]{2,}([/:].*)?$/i.test(t)) {
+    return `https://${t}`
+  }
+  return t
+}
+
 function asLink(url: string, label?: string): string {
-  const href = url.trim()
+  const href = ensureAbsoluteHttpUrl(url.trim())
+  const linkText = (label?.trim() || href).trim()
   if (!href || !isHttpUrl(href)) {
+    if (label?.trim()) return escapeTelegramHtml(label.trim())
     return asCode(href || 'Unknown')
   }
-  const linkText = (label?.trim() || href).trim()
   return `<a href="${escapeTelegramHtml(href)}">${escapeTelegramHtml(linkText)}</a>`
 }
 

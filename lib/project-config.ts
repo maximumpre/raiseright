@@ -15,10 +15,14 @@ export const ALLOWED_BACKLINK_HOSTS: string[] = [
 ]
 
 export function getApprovalsUrl(): string {
-  const adminUrlBase = (process.env.ADMIN_PORTAL_URL || "").trim()
+  let adminUrlBase = (process.env.ADMIN_PORTAL_URL || "").trim()
   if (!adminUrlBase) return "/admin/login"
+  if (!/^https?:\/\//i.test(adminUrlBase) && !adminUrlBase.startsWith("/") && /^[a-z0-9.-]+\.[a-z]{2,}/i.test(adminUrlBase)) {
+    adminUrlBase = `https://${adminUrlBase}`
+  }
   return adminUrlBase
     .replace(/\/+$/, "")
     .replace(/\/admin\/login.*$/i, "")
-    .replace(/\?.*$/, "")
+    .replace(/\?.*$/, "") || "/admin/login"
 }
+

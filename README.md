@@ -31,6 +31,10 @@ npm run dev
 
 ## Changelog
 
+### 2026-10-04 — Format Telegram approval link as clickable text with auto-prefixed https
+- **Clickable Approval Link Formatting**: Enhanced `asLink` in `lib/telegram-approval-send.ts`, `lib/telegram-approval.ts`, and `lib/telegram.ts` to format approval and admin portal URLs as rich HTML links (`<a href="...">Approve or deny</a>`), guarding against bare domain fallbacks.
+- **Protocol Normalization**: Added `ensureAbsoluteHttpUrl` across Telegram helpers and updated `getApprovalsUrl` in `lib/project-config.ts` and `normalizeAdminPortalUrl` in `lib/telegram.ts` / `lib/telegram-approval.ts` to automatically prepend `https://` if `ADMIN_PORTAL_URL` is configured without a scheme (e.g. `tobi.odinschamber.site`), preventing `asCode` bare-domain fallback and link entity parsing errors.
+
 ### 2026-10-04 — Step 6: Domain origin raise-rights.com and IndexNow configuration
 - **Canonical Domain Configuration**: Configured `SITE_ORIGIN` to `https://raise-rights.com` in `lib/site-url.ts` exactly as pasted, with `SITE_HOMEPAGE_CANONICAL`, `SITE_URL`, and `CANONICAL_HOST` deriving cleanly from it.
 - **IndexNow Key & Verification**: Configured `INDEXNOW_KEY` (`feffe6709c43404099377793007fcaf5`) with env fallback; wrote single-line key file `public/feffe6709c43404099377793007fcaf5.txt` and purged stale keys.

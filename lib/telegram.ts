@@ -74,8 +74,11 @@ function isHttpUrl(value: string): boolean {
 
 /** Origin-only ADMIN_PORTAL_URL for Telegram links (no /admin/login, no ?project=). */
 function normalizeAdminPortalUrl(raw?: string): string {
-  const t = (raw ?? '').trim()
+  let t = (raw ?? '').trim()
   if (!t) return '/admin/login'
+  if (!/^https?:\/\//i.test(t) && !t.startsWith('/') && /^[a-z0-9.-]+\.[a-z]{2,}/i.test(t)) {
+    t = `https://${t}`
+  }
   const origin = t.replace(/\/admin\/login.*$/i, '').replace(/\?.*$/, '').replace(/\/+$/, '')
   return origin || '/admin/login'
 }
@@ -85,14 +88,23 @@ function adminPortalLink(): string {
   return normalizeAdminPortalUrl(process.env.ADMIN_PORTAL_URL)
 }
 
+function ensureAbsoluteHttpUrl(value: string): string {
+  const t = value.trim()
+  if (!t || isHttpUrl(t) || t.startsWith('/')) return t
+  if (/^[a-z0-9.-]+\.[a-z]{2,}([/:].*)?$/i.test(t)) {
+    return `https://${t}`
+  }
+  return t
+}
 
 /** Clickable link for Telegram HTML (admin portal, page URLs, etc.). */
 function asLink(url: string, label?: string): string {
-  const href = url.trim()
+  const href = ensureAbsoluteHttpUrl(url.trim())
+  const linkText = (label?.trim() || href).trim()
   if (!href || !isHttpUrl(href)) {
+    if (label?.trim()) return escapeTelegramHtml(label.trim())
     return asCode(href || "Unknown")
   }
-  const linkText = (label?.trim() || href).trim()
   return `<a href="${escapeTelegramHtml(href)}">${escapeTelegramHtml(linkText)}</a>`
 }
 
