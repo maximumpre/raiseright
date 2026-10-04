@@ -1,7 +1,7 @@
 /** Display name for notifications and metadata. */
 export const SITE_DISPLAY_NAME = "RaiseRight" as const
 
-export const SITE_ORIGIN = "https://www.raiserights.com" as const
+export const SITE_ORIGIN = "https://raise-rights.com" as const
 
 /** @deprecated Use SITE_ORIGIN */
 export const SITE_URL = SITE_ORIGIN
@@ -14,7 +14,8 @@ export const SITE_SITEMAP_URL = `${SITE_ORIGIN}/sitemap.xml` as const
 
 export const CANONICAL_HOST = new URL(SITE_ORIGIN).hostname
 
-export const INDEXNOW_KEY = "2361c44645d045e9b88d36b22c4047ca"
+export const INDEXNOW_KEY =
+  process.env.INDEXNOW_KEY?.trim() ?? "feffe6709c43404099377793007fcaf5"
 
 export const DEFAULT_SITE_TITLE = "Login | RaiseRight" as const
 

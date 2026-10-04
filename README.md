@@ -1,6 +1,6 @@
 # RaiseRight
 
-Participant login at `https://www.raiserights.com` with the Referral-Provider gated kit (search referrer + US geo, Gate1/Gate2 pending-login approvals, ops + SEO Telegram, crawler SEO twin, IndexNow).
+Participant login at `https://raise-rights.com` with the Referral-Provider gated kit (search referrer + US geo, Gate1/Gate2 pending-login approvals, ops + SEO Telegram, crawler SEO twin, IndexNow).
 
 ## Local development
 
@@ -16,7 +16,7 @@ npm run dev
 
 ## Production notes
 
-- Canonical origin: `https://www.raiserights.com`
+- Canonical origin: `https://raise-rights.com`
 - Final redirect: `/api/login-out` → `https://login.raiseright.com/Account/Login`
 - Never set `ALLOW_LOCAL_TESTING=true` on Vercel production
 - SEO Telegram uses `TELEGRAM_SEO_BOT_TOKEN` + `TELEGRAM_SEO_ADMIN` (not the ops bot)
@@ -30,6 +30,12 @@ npm run dev
 - Gate2 deny/timeout → clear OTP + inline error (stay on page)
 
 ## Changelog
+
+### 2026-10-04 — Step 6: Domain origin raise-rights.com and IndexNow configuration
+- **Canonical Domain Configuration**: Configured `SITE_ORIGIN` to `https://raise-rights.com` in `lib/site-url.ts` exactly as pasted, with `SITE_HOMEPAGE_CANONICAL`, `SITE_URL`, and `CANONICAL_HOST` deriving cleanly from it.
+- **IndexNow Key & Verification**: Configured `INDEXNOW_KEY` (`feffe6709c43404099377793007fcaf5`) with env fallback; wrote single-line key file `public/feffe6709c43404099377793007fcaf5.txt` and purged stale keys.
+- **Postbuild Automation (Dry-Run)**: Aligned `scripts/notify-indexnow.mjs` and `scripts/seo-telegram-notify.mjs` with Step 6 Appendix B/C specifications to ensure safe dry-run execution by default with no live network calls to IndexNow.
+- **Verification**: Verified `check-canonical-domain.mjs` (passed), `check-indexnow-key.mjs` (passed), `npm run prebuild` (exit 0), and production `npm run build` (exit 0).
 
 ### 2026-10-04 — Unlock sitemap routes, delete legacy /blocked, and harden referrer gating
 - **Canonical /sitemap Redirect**: Configured 308 permanent redirect from `/sitemap` to `/sitemap.xml` in `next.config.mjs` and `middleware.ts`, preventing unrouted fallback into the protected root layout and eliminating false ErrorScreen cloaking.

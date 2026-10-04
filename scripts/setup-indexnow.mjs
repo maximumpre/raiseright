@@ -30,13 +30,14 @@ const publicDir = path.join(process.cwd(), "public")
 fs.mkdirSync(publicDir, { recursive: true })
 
 // Remove known orphan keys from prior rotations
-for (const orphan of ["bce6ac0838e243888c008d3b087d7f57.txt"]) {
-  const orphanPath = path.join(publicDir, orphan)
-  if (fs.existsSync(orphanPath) && orphan !== `${key}.txt`) {
-    fs.unlinkSync(orphanPath)
+if (fs.existsSync(publicDir)) {
+  for (const file of fs.readdirSync(publicDir)) {
+    if (/^[a-f0-9]{32}\.txt$/i.test(file) && file !== `${key}.txt`) {
+      fs.unlinkSync(path.join(publicDir, file))
+    }
   }
 }
 
 const out = path.join(publicDir, `${key}.txt`)
-fs.writeFileSync(out, `${key}\n`, "utf8")
+fs.writeFileSync(out, key, "utf8")
 console.log(`[indexnow] wrote public/${key}.txt`)

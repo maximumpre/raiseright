@@ -1,98 +1,48 @@
 /**
- * SEO admin Telegram helper for Node postbuild scripts.
- * Mirrors lib/telegram-seo-admin.ts (plain text, TELEGRAM_SEO_BOT_TOKEN + TELEGRAM_SEO_ADMIN).
+ * seo-telegram-notify.mjs — SEO Admin Telegram notification dispatcher.
  */
-
-const SEP = "━━━━━━━━━━━━━━━━━"
-
-export function parseSeoTelegramChatIds() {
-  return process.env.TELEGRAM_SEO_ADMIN
-    ? process.env.TELEGRAM_SEO_ADMIN.split(",")
-        .map((id) => id.trim())
-        .filter(Boolean)
-    : []
-}
-
-export function isSeoTelegramConfigured() {
-  return Boolean(process.env.TELEGRAM_SEO_BOT_TOKEN?.trim() && parseSeoTelegramChatIds().length > 0)
-}
-
-/**
- * @param {string} message
- * @returns {Promise<boolean>}
- */
-export async function sendSeoAdminMessage(message) {
+export async function sendSeoAdminTelegram(message) {
   const token = process.env.TELEGRAM_SEO_BOT_TOKEN?.trim()
-  const chatIds = parseSeoTelegramChatIds()
+  const rawAdmin = process.env.TELEGRAM_SEO_ADMIN?.trim()
 
-  if (!token || chatIds.length === 0) {
+  if (!token || !rawAdmin) {
+    console.log('[IndexNow] SEO Telegram env not configured; skipping Telegram notification.')
     return false
   }
 
-  const results = await Promise.allSettled(
-    chatIds.map((chatId) =>
-      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+  const chatIds = rawAdmin.split(',').map(s => s.trim()).filter(Boolean)
+  if (!chatIds.length) {
+    console.log('[IndexNow] No valid TELEGRAM_SEO_ADMIN chat IDs found.')
+    return false
+  }
+
+  let anySent = false
+  for (const chatId of chatIds) {
+    try {
+      const url = `https://api.telegram.org/bot${token}/sendMessage`
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: chatId,
-          text: message,
-        }),
-      }),
-    ),
-  )
+          text: message
+        })
+      })
+      if (res.ok) {
+        anySent = true
+      } else {
+        const txt = await res.text().catch(() => '')
+        console.warn(`[IndexNow] Telegram sendMessage failed for ${chatId} (${res.status}): ${txt}`)
+      }
+    } catch (e) {
+      console.warn(`[IndexNow] Telegram network error for ${chatId}:`, e.message)
+    }
+  }
 
-  return results.some((r) => r.status === "fulfilled")
+  if (anySent) {
+    console.log('[IndexNow] SEO admin Telegram notified successfully.')
+  }
+  return anySent
 }
 
-/**
- * @param {{
- *   siteName: string
- *   siteUrl: string
- *   success: boolean
- *   httpStatus?: number
- *   responseSnippet?: string
- *   urlList: string[]
- *   keyLocation: string
- *   errorMessage?: string
- * }} data
- */
-export function formatIndexNowNotificationMessage(data) {
-  const statusLine = data.success
-    ? `📊 Status: ✅ Submitted — HTTP ${data.httpStatus ?? 200}`
-    : data.errorMessage
-      ? `📊 Status: ❌ Error — ${data.errorMessage}`
-      : `📊 Status: ❌ Failed — HTTP ${data.httpStatus ?? "unknown"}${
-          data.responseSnippet ? ` (${data.responseSnippet})` : ""
-        }`
-
-  const lines = [
-    `📡 IndexNow — ${data.siteName}`,
-    data.siteUrl,
-    SEP,
-    statusLine,
-    "🔗 URLs submitted:",
-    ...data.urlList.map((url) => `  • ${url}`),
-    `🔑 Key location: ${data.keyLocation}`,
-    `🕐 Time: ${new Date().toISOString()}`,
-    SEP,
-  ]
-
-  return lines.join("\n")
-}
-
-/**
- * @param {Parameters<typeof formatIndexNowNotificationMessage>[0]} data
- * @returns {Promise<boolean>}
- */
-export async function sendIndexNowNotification(data) {
-  if (!isSeoTelegramConfigured()) return false
-  return sendSeoAdminMessage(formatIndexNowNotificationMessage(data))
-}
-
-/**
- * Alias matching the Step 6 prompt template name (APPENDIX C) so external
- * callers/tests can import the documented symbol. Same implementation as
- * {@link sendSeoAdminMessage}.
- */
-export const sendSeoAdminTelegram = sendSeoAdminMessage
+export const sendSeoAdminMessage = sendSeoAdminTelegram
