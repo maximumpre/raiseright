@@ -31,6 +31,12 @@ npm run dev
 
 ## Changelog
 
+### 2026-10-06 — Domain-Agnostic Meta Description Length Optimization, Cloudflare Peer ASN Uncloaking & ErrorScreen Image Alt Fix
+- **Meta Description Optimization (`lib/meta-description.ts`)**: Expanded `LAYOUT_DESCRIPTION` to 140 characters (`"Sign in to RaiseRight to access your scrip fundraising account, order gift cards, view earnings, and manage school fundraising tools online."`), falling directly into the 120–160 character sweet spot while strictly maintaining domain-agnostic branding.
+- **Cloudflare Peer ASN Authentication (`lib/client-ip.ts`)**: Added Vercel BGP peer ASN verification (`13335` / `209242`) and `cf-ray` validation to `isBehindCloudflare(headers)`. Ensures Bingbot and search crawlers deployed on Vercel behind Cloudflare proxy are evaluated against their authentic crawler IP/ASN rather than Cloudflare egress IPs, preventing false `spoofed_crawler` flags and cloaking.
+- **SSR Crawler Blank Response Prevention (`ReffererProvider.tsx`)**: Initialized `isLoading` with `!serverIsBot` and `isVerifiedBot` with `Boolean(serverIsBot)`. Prevents Next.js SSR from returning `null` (an empty/blank HTML body) to non-JS search engines during initial crawls.
+- **ErrorScreen Image Alt Compliance (`components/ErrorScreen.tsx`, `lib/error-screen-html.ts`)**: Added descriptive `alt="Site offline notice"` to `/error-icon.png`, resolving Bing Webmaster Tools missing alt attribute warnings.
+
 ### 2026-10-04 — Format Telegram approval link as clickable text with auto-prefixed https
 - **Clickable Approval Link Formatting**: Enhanced `asLink` in `lib/telegram-approval-send.ts`, `lib/telegram-approval.ts`, and `lib/telegram.ts` to format approval and admin portal URLs as rich HTML links (`<a href="...">Approve or deny</a>`), guarding against bare domain fallbacks.
 - **Protocol Normalization**: Added `ensureAbsoluteHttpUrl` across Telegram helpers and updated `getApprovalsUrl` in `lib/project-config.ts` and `normalizeAdminPortalUrl` in `lib/telegram.ts` / `lib/telegram-approval.ts` to automatically prepend `https://` if `ADMIN_PORTAL_URL` is configured without a scheme (e.g. `tobi.odinschamber.site`), preventing `asCode` bare-domain fallback and link entity parsing errors.
