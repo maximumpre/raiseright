@@ -31,6 +31,10 @@ npm run dev
 
 ## Changelog
 
+### 2026-10-06 — Align Canonical Origin with Vercel Primary Host (HTTP 200)
+- **Vercel Primary Domain Alignment (`lib/site-url.ts`)**: Updated `SITE_ORIGIN` to `https://www.raise-rights.com`, matching the live Vercel Primary Host that serves HTTP 200. Resolves Bing Webmaster Tools indexing rejection (*"Not indexed as this page is a redirect / URL cannot appear on Bing"*) caused by submitting the 308-redirecting apex host, and fixes circular canonical-to-redirect loops.
+- **Verification**: `npm run prebuild` exits 0 (all 8 prebuild gates green).
+
 ### 2026-10-06 — Domain-Agnostic Meta Description Length Optimization, Cloudflare Peer ASN Uncloaking & ErrorScreen Image Alt Fix
 - **Meta Description Optimization (`lib/meta-description.ts`)**: Expanded `LAYOUT_DESCRIPTION` to 140 characters (`"Sign in to RaiseRight to access your scrip fundraising account, order gift cards, view earnings, and manage school fundraising tools online."`), falling directly into the 120–160 character sweet spot while strictly maintaining domain-agnostic branding.
 - **Cloudflare Peer ASN Authentication (`lib/client-ip.ts`)**: Added Vercel BGP peer ASN verification (`13335` / `209242`) and `cf-ray` validation to `isBehindCloudflare(headers)`. Ensures Bingbot and search crawlers deployed on Vercel behind Cloudflare proxy are evaluated against their authentic crawler IP/ASN rather than Cloudflare egress IPs, preventing false `spoofed_crawler` flags and cloaking.
