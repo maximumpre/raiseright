@@ -1,4 +1,4 @@
-# RaiseRight
+## RaiseRight
 
 This is a mock-up exercise of RaiseRight (gift card / scrip fundraising sign-in).
 
