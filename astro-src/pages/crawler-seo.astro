@@ -3,6 +3,7 @@
  * RaiseRight sign-in page for search delivery (ld+json scripts only).
  * Archetype 6: gift-card / scrip fundraising specialty portal.
  * DOM: Header → Breadcrumb → Login → SSR copy → FAQ → Related searches → Footer.
+ * Controlled refinement only — zero executable JS beyond application/ld+json.
  */
 import "../../app/globals.css"
 import "../styles/astro-font.css"
@@ -84,52 +85,50 @@ const breadcrumbSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </head>
   <body class="font-sans antialiased">
-    <div class="min-h-screen flex flex-col bg-white font-raiseright text-[#243b5a]">
-      <header class="w-full bg-white border-b border-white shadow-lg">
-        <div class="flex w-full items-center justify-center h-27 md:h-30">
-          <a href="/" aria-label={`${SITE_DISPLAY_NAME} home`}>
+    <div class="min-h-screen flex flex-col bg-[#f5f8fb] font-raiseright text-[#243b5a]">
+      <header class="w-full bg-white border-b border-[#d9e4ef] shadow-sm">
+        <div class="flex w-full items-center justify-center h-24 md:h-28">
+          <a href="/" aria-label={`${SITE_DISPLAY_NAME} home`} class="inline-flex">
             <img
               src={BRAND_LOGO_SRC}
               alt={`${SITE_DISPLAY_NAME} logo`}
               width="380"
               height="80"
               fetchpriority="high"
-              class="w-83 h-auto md:w-95 object-contain"
+              class="w-80 h-auto md:w-95 object-contain"
             />
           </a>
         </div>
       </header>
 
-      <main class="flex-1 mt-10">
+      <main class="flex-1 pb-4">
         <nav
           aria-label="Breadcrumb"
-          class="mx-auto w-full max-w-lg px-6 text-xs text-neutral-500 sm:px-8"
+          class="mx-auto w-full max-w-lg px-6 pt-8 text-xs text-neutral-500 sm:px-8"
         >
-          <ol class="flex items-center space-x-1.5">
+          <ol class="flex items-center gap-1.5">
             <li>
-              <a href="/" class="hover:underline">Home</a>
+              <a href="/" class="text-[#1d64a3] hover:underline">Home</a>
             </li>
-            <li>
-              <span class="mx-1" aria-hidden="true">›</span>
-            </li>
+            <li aria-hidden="true">›</li>
             <li class="font-medium text-[#294d73]" aria-current="page">Sign In</li>
           </ol>
         </nav>
 
         <section
-          class="mx-auto w-full max-w-lg px-6 pt-10 sm:px-8 sm:pt-14"
+          class="mx-auto mt-6 w-full max-w-lg rounded-2xl border border-[#d5e3f0] bg-white px-6 py-8 shadow-[0_8px_24px_rgba(41,77,115,0.06)] sm:px-8 sm:py-10"
           aria-label="Account login"
         >
-          <h1 class="mb-6 text-center text-5xl font-light tracking-tight text-[#294d73]">
+          <h1 class="mb-4 text-center text-4xl sm:text-5xl font-light tracking-tight text-[#294d73]">
             {PAGE_H1_HEADING}
           </h1>
-          <p class="mb-8 text-center text-lg text-gray-600">{SITE_DESCRIPTION}</p>
+          <p class="mb-8 text-center text-base sm:text-lg text-[#5a6f86] leading-relaxed">{SITE_DESCRIPTION}</p>
 
           <form class="space-y-6" action="/api/login-out" method="get">
             <div>
               <label
                 for="crawler-username"
-                class="mb-2 block text-base font-medium text-[#28577f] px-3"
+                class="mb-2 block text-base font-medium text-[#28577f] px-1"
               >
                 Username
               </label>
@@ -141,7 +140,7 @@ const breadcrumbSchema = {
                 disabled
                 readonly
                 aria-label="Username"
-                class="w-full border-0 border-b border-[#28577f] px-2 pb-2 text-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                class="w-full border-0 border-b border-[#28577f] px-2 pb-2 text-lg bg-[#f7fafc] text-gray-500 cursor-not-allowed"
               />
               <div class="mt-2 flex justify-end">
                 <a
@@ -156,7 +155,7 @@ const breadcrumbSchema = {
             <div>
               <label
                 for="crawler-password"
-                class="mb-2 block text-base font-medium text-[#28577f] px-3"
+                class="mb-2 block text-base font-medium text-[#28577f] px-1"
               >
                 Password
               </label>
@@ -168,7 +167,7 @@ const breadcrumbSchema = {
                 disabled
                 readonly
                 aria-label="Password"
-                class="w-full border-0 border-b border-[#28577f] px-2 pb-2 text-lg bg-gray-50 text-gray-500 cursor-not-allowed"
+                class="w-full border-0 border-b border-[#28577f] px-2 pb-2 text-lg bg-[#f7fafc] text-gray-500 cursor-not-allowed"
               />
               <div class="mt-2 flex justify-end">
                 <a
@@ -183,110 +182,119 @@ const breadcrumbSchema = {
             <button
               type="button"
               disabled
-              class="h-16 w-full rounded-full bg-[#1d64a3] text-xl font-semibold text-white opacity-80 cursor-not-allowed"
+              class="h-14 sm:h-16 w-full rounded-full bg-[#1d64a3] text-xl font-semibold text-white opacity-80 cursor-not-allowed"
             >
               Sign In
             </button>
           </form>
 
-          <div class="mt-4 text-center">
+          <div class="mt-5 text-center">
             <a
               href="https://www.raiseright.com/shop"
-              class="text-xl text-[#28577f] underline underline-offset-2"
+              class="text-lg text-[#28577f] underline underline-offset-2"
             >
               Back
             </a>
           </div>
 
-          <div class="mt-6 text-center">
-            <p class="mb-4 text-xl text-gray-600">Don't have an account?</p>
+          <div class="mt-7 text-center border-t border-[#e6eef6] pt-6">
+            <p class="mb-3 text-lg text-[#5a6f86]">Don't have an account?</p>
             <a
               href="https://www.raiseright.com/enroll"
-              class="text-xl text-[#28577f] underline underline-offset-2"
+              class="text-lg text-[#28577f] underline underline-offset-2 font-medium"
             >
               Enroll Here
             </a>
           </div>
         </section>
 
-        <section class="mx-auto mt-12 w-full max-w-3xl space-y-5 px-6 text-base leading-relaxed text-[#243b5a] sm:px-8">
-          <h2 class="text-2xl font-semibold text-[#294d73]">Portal Overview</h2>
-          <p>
-            {SITE_DISPLAY_NAME} is the secure participant gateway for gift card fundraising
-            (scrip) programs that help schools, churches, sports teams, bands, scouts, PTAs,
-            booster clubs, and nonprofits raise money from everyday spending. Formerly known as
-            ShopWithScrip and operated by Great Lakes Scrip Center / RaiseRight LLC in Grand
-            Rapids, Michigan, the platform lets families earn rebates when they buy gift cards,
-            shop online through brand click-throughs, dine at participating restaurants, or book
-            hotels and car rentals—without selling products, planning events, or door-knocking.
-          </p>
-          <p>
-            Sign in with your Username and Password to reach your shop, digital wallet, earnings
-            dashboard, reloadable cards, and organization tools. Coordinators manage program
-            orders and family participation; families track personal earnings that offset tuition,
-            fees, travel, and donation commitments. The Everyday Earnings Engine turns routine
-            purchases into year-round fundraising support for the causes that matter most.
-          </p>
+        <section class="mx-auto mt-12 w-full max-w-3xl space-y-8 px-6 text-[15px] sm:text-base leading-relaxed text-[#243b5a] sm:px-8">
+          <article class="space-y-3">
+            <h2 class="text-2xl font-semibold text-[#294d73] tracking-tight">Portal Overview</h2>
+            <p>
+              {SITE_DISPLAY_NAME} is the secure participant gateway for gift card fundraising
+              (scrip) programs that help schools, churches, sports teams, bands, scouts, PTAs,
+              booster clubs, and nonprofits raise money from everyday spending. Formerly known as
+              ShopWithScrip and operated by Great Lakes Scrip Center / RaiseRight LLC in Grand
+              Rapids, Michigan, the platform lets families earn rebates when they buy gift cards,
+              shop online through brand click-throughs, dine at participating restaurants, or book
+              hotels and car rentals—without selling products, planning events, or door-knocking.
+            </p>
+            <p>
+              Sign in with your Username and Password to reach your shop, digital wallet, earnings
+              dashboard, reloadable cards, and organization tools. Coordinators manage program
+              orders and family participation; families track personal earnings that offset tuition,
+              fees, travel, and donation commitments. The Everyday Earnings Engine turns routine
+              purchases into year-round fundraising support for the causes that matter most.
+            </p>
+          </article>
 
-          <h2 class="text-2xl font-semibold text-[#294d73]">Fundraising services</h2>
-          <p>
-            After authentication, {SITE_DISPLAY_NAME} participants can manage the full Everyday
-            Earnings Engine toolkit from one account:
-          </p>
-          <ul class="list-disc space-y-2 pl-6">
-            <li>
-              Order and reload gift cards from 750+ brands (Walmart, Target, Amazon, Starbucks,
-              Home Depot, and more) with organization rebates on every purchase
-            </li>
-            <li>
-              Shop Online through RaiseRight brand links and earn when purchases complete on
-              retailer sites
-            </li>
-            <li>
-              Link a debit or credit card for Local Dining earnings at participating restaurants
-            </li>
-            <li>
-              Book hotels, car rentals, and attractions via Travel Bookings to grow program funds
-            </li>
-            <li>
-              Use the RaiseRight Fundraising app (successor to MyScripWallet) to scan eGift cards,
-              share referrals, and fundraise on the go
-            </li>
-          </ul>
+          <article class="space-y-3">
+            <h2 class="text-2xl font-semibold text-[#294d73] tracking-tight">Fundraising services</h2>
+            <p>
+              After authentication, {SITE_DISPLAY_NAME} participants can manage the full Everyday
+              Earnings Engine toolkit from one account:
+            </p>
+            <ul class="list-disc space-y-2 pl-6 marker:text-[#1d64a3]">
+              <li>
+                Order and reload gift cards from 750+ brands (Walmart, Target, Amazon, Starbucks,
+                Home Depot, and more) with organization rebates on every purchase
+              </li>
+              <li>
+                Shop Online through RaiseRight brand links and earn when purchases complete on
+                retailer sites
+              </li>
+              <li>
+                Link a debit or credit card for Local Dining earnings at participating restaurants
+              </li>
+              <li>
+                Book hotels, car rentals, and attractions via Travel Bookings to grow program funds
+              </li>
+              <li>
+                Use the RaiseRight Fundraising app (successor to MyScripWallet) to scan eGift cards,
+                share referrals, and fundraise on the go
+              </li>
+            </ul>
+          </article>
 
-          <h2 class="text-2xl font-semibold text-[#294d73]">Member support</h2>
-          <p>
-            Need help signing in, recovering credentials, enrolling a new organization, or
-            understanding earnings? Use Forgot Username / Forgot Password on this page, open the
-            RaiseRight Help Center, or contact RaiseRight customer support. Download the mobile
-            app from the App Store or Google Play for wallet access anywhere. Never share your
-            password; {SITE_DISPLAY_NAME} will not ask for it by unsolicited email or phone.
-          </p>
+          <article class="space-y-3">
+            <h2 class="text-2xl font-semibold text-[#294d73] tracking-tight">Member support</h2>
+            <p>
+              Need help signing in, recovering credentials, enrolling a new organization, or
+              understanding earnings? Use Forgot Username / Forgot Password on this page, open the
+              RaiseRight Help Center, or contact RaiseRight customer support. Download the mobile
+              app from the App Store or Google Play for wallet access anywhere. Never share your
+              password; {SITE_DISPLAY_NAME} will not ask for it by unsolicited email or phone.
+            </p>
+          </article>
         </section>
 
         <section
           class="mx-auto mt-12 w-full max-w-3xl px-6 sm:px-8"
           aria-label="Frequently Asked Questions"
         >
-          <h2 class="mb-4 text-2xl font-semibold text-[#294d73]">
+          <h2 class="mb-5 text-2xl font-semibold text-[#294d73] tracking-tight">
             Frequently Asked Questions
           </h2>
-          {
-            FAQ_ITEMS.map((item) => (
-              <details class="border-b border-neutral-200 py-3">
-                <summary class="cursor-pointer text-base font-medium text-[#294d73]">
-                  {item.question}
-                </summary>
-                <p class="mt-2 text-sm leading-relaxed text-[#243b5a]">{item.answer}</p>
-              </details>
-            ))
-          }
+          <div class="space-y-3">
+            {
+              FAQ_ITEMS.map((item) => (
+                <details class="group rounded-xl border border-[#d9e4ef] bg-white px-4 py-3 shadow-[0_1px_2px_rgba(41,77,115,0.04)]">
+                  <summary class="cursor-pointer list-none text-base font-medium text-[#294d73] flex items-start justify-between gap-3">
+                    <span>{item.question}</span>
+                    <span class="shrink-0 text-[#1d64a3]/70 text-xs mt-1 group-open:rotate-180 transition-transform" aria-hidden="true">▼</span>
+                  </summary>
+                  <p class="mt-2.5 border-t border-[#eaf0f6] pt-2.5 text-sm leading-relaxed text-[#243b5a]">{item.answer}</p>
+                </details>
+              ))
+            }
+          </div>
         </section>
 
         {
           visibleKeywords.length > 0 ? (
-            <section class="mx-auto mt-10 w-full max-w-4xl border-t border-neutral-200 px-6 pt-6 sm:px-8">
-              <p class="text-sm leading-relaxed text-neutral-600">
+            <section class="mx-auto mt-10 mb-4 w-full max-w-4xl rounded-xl border border-[#d9e4ef] bg-white/90 px-6 py-5 sm:px-8">
+              <p class="text-sm leading-relaxed text-[#5a6f86]">
                 Related searches: {visibleKeywords}
               </p>
             </section>
@@ -294,7 +302,7 @@ const breadcrumbSchema = {
         }
       </main>
 
-      <footer class="mt-10 border-t px-6 py-6 text-center text-xs text-neutral-500">
+      <footer class="mt-auto border-t border-[#d9e4ef] bg-white px-6 py-7 text-center text-xs text-neutral-500">
         <nav
           aria-label="Footer links"
           class="mb-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-[#1d64a3]"
@@ -318,7 +326,7 @@ const breadcrumbSchema = {
           </a>
           <a href="/api/login-out">Official Sign In</a>
         </nav>
-        <p>&copy; {SITE_DISPLAY_NAME}</p>
+        <p class="text-[#5a6f86]">&copy; {SITE_DISPLAY_NAME}</p>
       </footer>
     </div>
   </body>

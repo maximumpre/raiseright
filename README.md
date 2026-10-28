@@ -33,6 +33,12 @@ npm run dev
 
 ## Changelog
 
+### 2026-10-28 — CrawlerSeoPage controlled refinement (twin only)
+- **Completed:** Polished `astro-src/pages/crawler-seo.astro` visual hierarchy only — login card, FAQ panels, Related searches frame, footer. Same brand chrome, copy, FAQ count, keyword block, zero executable JS. Human landing untouched.
+- **Files affected:** `astro-src/pages/crawler-seo.astro`, `public/crawler-seo.html` (sync), `README.md`
+- **Verification:** `npm run build:astro` + `audit-crawler-seo` OK; `tsc --noEmit` 0.
+- **Outcome:** Search twin reads cleaner/more distinctive without a redesign.
+
 ### 2026-10-27 — Testing 3 fix-until-green (Steins Gate D–H)
 - **Completed:** Synced kit `ErrorScreen` / `error-screen.css` / `error-screen-html` + wired `audit-steins-gate` / `audit-error-screen` into `prebuild`. Middleware stamps twin via `isCrawlerSeoPageUA` (AI-reference + social). Soft/strict scrapers cloaked before local unlock. Clean brand-only `WebSite.alternateName`. FAQ headings `Portal Overview` / `Frequently Asked Questions`. Sitemap uses `SITE_CONTENT_UPDATED_AT` + weekly. `vercel.json` apex→www for `raise-rights.com`. Renamed misnamed JPEG out of `public/*.mjs`; removed leftover `pnpm-lock.yaml`.
 - **Files affected:** `middleware.ts`, `components/ErrorScreen.tsx`, `components/error-screen.css`, `lib/error-screen-html.ts`, `astro-src/pages/{index,crawler-seo}.astro`, `astro-src/components/error-screen.css`, `components/seo-json-ld.tsx`, `app/sitemap.ts`, `vercel.json`, `package.json`, `scripts/audit-steins-gate.mjs`, `scripts/audit-error-screen.mjs`, `public/raiseright-login-screenshot.jpg`, `README.md`
